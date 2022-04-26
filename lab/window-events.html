@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Paths' Lab - Window Events</title>
+    <script src="https://unpkg.com/rxjs@7.5.5/dist/bundles/rxjs.umd.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container-fluid">
+        <h1>Events History</h1>
+        <ul id="events-history">
+        </ul>
+    </div>
+</body>
+<footer>
+    <script>
+        const {fromEvent, merge, map, scan} = rxjs;
+
+        const windowEvents = [
+            'resize',
+            'scroll',
+            'click',
+            'dblclick',
+            'mousemove',
+            'mouseenter',
+            'mouseleave',
+            'mousedown',
+            'mouseup',
+            'keydown',
+            'keyup',
+            'keypress',
+            'contextmenu',
+            'wheel',
+            'touchstart',
+            'touchmove',
+            'touchend',
+            'touchcancel',
+            'pointerdown',
+            'pointermove',
+            'pointerup',
+            'pointercancel',
+            'pointerover',
+            'pointerenter',
+            'pointerleave',
+            'pointerout',
+            'gotpointercapture',
+            'lostpointercapture',
+            'orientationchange',
+        ]
+        const events = windowEvents.map(evt => fromEvent(window, evt).pipe(
+            map(e => e.type),
+        ));
+        const source$ = merge(...events);
+        const subscription = source$.pipe(
+            // count emitted events grouped by event type
+            scan((acc, evt) => {
+                acc[evt] = (acc[evt] || 0) + 1;
+                return acc;
+            }, {}),
+        ).subscribe(
+            eventsCount => {
+                const eventsHistory = document.getElementById('events-history');
+                eventsHistory.innerHTML = '';
+                for (const evt in eventsCount) {
+                    eventsHistory.innerHTML += `<li>${evt}: ${eventsCount[evt]}</li>`;
+                }
+            },
+            error => console.error(error),
+            () => console.log('complete')
+        );
+    </script>
+</footer>
+</html>

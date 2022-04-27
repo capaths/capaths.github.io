@@ -87,10 +87,10 @@
             () => console.log('complete')
         );
         source$.pipe(
-            // list last 64 emitted events
+            // list last 16 emitted events
             scan((acc, evt) => {
                 acc.push(evt);
-                if (acc.length > 64) {
+                if (acc.length > 16) {
                     acc.shift();
                 }
                 return acc;

@@ -90,7 +90,7 @@
             // list last 64 emitted events
             scan((acc, evt) => {
                 acc.push(evt);
-                if (acc.length > 16) {
+                if (acc.length > 64) {
                     acc.shift();
                 }
                 return acc;
@@ -99,7 +99,8 @@
             eventsList => {
                 const eventsTable = document.getElementById('events-list').getElementsByTagName('tbody')[0];
                 eventsTable.innerHTML = '';
-                eventsList.forEach(evt => {
+                const reversedEventsList = eventsList.slice().reverse();
+                reversedEventsList.forEach(evt => {
                     eventsTable.innerHTML += `<tr><td>${evt}</td><td>${Date.now()}</td></tr>`;
                 });
             },

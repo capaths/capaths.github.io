@@ -9,10 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
+    env:
+      NODE_VERSION: 14
 
     steps:
     - uses: actions/checkout@v3
@@ -28,7 +26,7 @@ jobs:
         npx webpack
 
     - name: Upload build
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: github-pages
         path: dist/

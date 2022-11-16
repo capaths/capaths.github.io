@@ -33,6 +33,7 @@ jobs:
         name: build
         path: dist/
   deploy:
+    if: github.event_name == 'push'
     needs: build
 
     permissions:
@@ -46,5 +47,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
-        if: github.event_name == 'push'
         uses: actions/deploy-pages@v1

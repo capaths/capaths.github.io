@@ -3,12 +3,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode: 'development',
-    entry: './src/index.ts',
+    entry: {
+        index: './src/index.ts',
+    },
     devServer: {
         static: './dist'
-    },
-    optimization: {
-        runtimeChunk: 'single'
     },
     module: {
         rules: [
@@ -32,15 +31,19 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Output Management',
-        })
+            filename: (entryName) => `${entryName}.html`,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+            }
+        }),
     ],
     devtool: 'inline-source-map',
     resolve: {
         extensions: ['.ts', '.js'],
     },
     output: {
-        filename: '[name].bundle.js',
+        filename: '[name].[hash].js',
         path: path.resolve(__dirname, 'dist'),
         clean: true,
     }

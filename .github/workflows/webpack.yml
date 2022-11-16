@@ -27,6 +27,24 @@ jobs:
         npm install
         npx webpack
 
-    - name: Deploy to GitHub Pages
-      if: github.event_name == 'push'
-      uses: actions/deploy-pages@v1
+    - name: Upload build
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: dist/
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push'
+        uses: actions/deploy-pages@v1

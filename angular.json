@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/capaths-github-io",
+            "outputPath": "dist/capaths-github-io/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -97,6 +97,60 @@
             ],
             "scripts": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/capaths-github-io/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json",
+            "inlineStyleLanguage": "scss"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media"
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false,
+              "vendorChunk": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "capaths-github-io:build:development",
+              "serverTarget": "capaths-github-io:server:development"
+            },
+            "production": {
+              "browserTarget": "capaths-github-io:build:production",
+              "serverTarget": "capaths-github-io:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "capaths-github-io:build:production",
+              "serverTarget": "capaths-github-io:server:production"
+            },
+            "development": {
+              "browserTarget": "capaths-github-io:build:development",
+              "serverTarget": "capaths-github-io:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

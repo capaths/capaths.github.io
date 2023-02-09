@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Paths' Lab - Orientation Change CSS</title>
+    <style>
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: rgb(0, 0, 0);
+            margin: 10px;
+            box-sizing: border-box;
+            touch-action: none;
+        }
+
+        .square .fit-container {
+            max-height: 100%;
+            max-width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: rgb(73, 201, 169);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="square">
+                <div class="fit-container">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<footer>
+    <script type="module">
+        import 'https://cdn.interactjs.io/v1.9.20/auto-start/index.js'
+        import 'https://cdn.interactjs.io/v1.9.20/actions/resize/index.js'
+        import 'https://cdn.interactjs.io/v1.9.20/dev-tools/index.js'
+        import interact from 'https://cdn.interactjs.io/v1.9.20/interactjs/index.js'
+
+        interact('.square').resizable({
+            edges: {
+                top: true,
+                left: true,
+                bottom: true,
+                right: true
+            }
+        })
+        .on('resizemove', (event) => {
+            let { x, y } = event.target.dataset
+
+            x = (parseFloat(x) || 0) + event.deltaRect.left
+            y = (parseFloat(y) || 0) + event.deltaRect.top
+
+            Object.assign(event.target.style, {
+            width: `${event.rect.width}px`,
+            height: `${event.rect.height}px`,
+            transform: `translate(${x}px, ${y}px)`
+            })
+
+            Object.assign(event.target.dataset, { x, y })
+        })
+    </script>
+</footer>
+
+</html>

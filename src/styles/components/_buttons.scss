@@ -1,0 +1,15 @@
+.button {
+  @apply px-3 py-1 rounded transition-colors;
+
+  &:hover {
+    @apply bg-licorice-700/10;
+  }
+
+  &:active {
+    @apply bg-licorice-700/20;
+  }
+}
+
+a:not(.button) {
+  @apply hover:underline;
+}
